@@ -1,34 +1,23 @@
-import { put, call, take, takeLatest} from 'redux-saga/effects';
-import {START_LOGIN, START_SIGNOUT} from '../store/auth/types';
-import {signInSuccess, signOutSuccess} from '../store/auth/actions';
-import {notifyError, notify} from '../store/notification/actions';
-import {login, signout} from '../services/api';
-import {Credentials, EmailCreation, User} from '../types'
-const ANY_ERROR_TEXT = 'Something went wrong, please try again';
+import { call, put } from 'redux-saga/effects';
+import { SagaIterator } from 'redux-saga';
+// ... your other imports
 
-function* loginUpdates({credentials}: any) {
-  try{
-    // console.log("payload", payload);
-    const currentUser = yield call(login, credentials)
+function* loginSaga(credentials: any): SagaIterator {   // ✅ add `: SagaIterator`
+  try {
+    const currentUser = yield call(login, credentials);
     yield put(signInSuccess(currentUser));
-  }catch({message}){
+  } catch (e) {                                          // ✅ catch `e`, not `{message}`
+    const message = (e as Error).message;
     yield put(notifyError(message || ANY_ERROR_TEXT));
-  }  
+  }
 }
 
-function* signOutUpdates({currentUser}: any) {
-  try{
-    // console.log("payload", payload);
-    const response = yield call(signout, currentUser)
-    yield put(signOutSuccess()); 
-  }catch({message}){
+function* signoutSaga(currentUser: any): SagaIterator { // ✅ add `: SagaIterator`
+  try {
+    const response = yield call(signout, currentUser);
+    yield put(signOutSuccess());
+  } catch (e) {                                          // ✅ catch `e`, not `{message}`
+    const message = (e as Error).message;
     yield put(notifyError(message || ANY_ERROR_TEXT));
-  }  
+  }
 }
-
-export function* watchAuth() {
-  yield takeLatest(START_LOGIN, loginUpdates)
-  yield takeLatest(START_SIGNOUT, signOutUpdates)
-}
-
-
