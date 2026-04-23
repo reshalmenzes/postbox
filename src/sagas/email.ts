@@ -1,22 +1,21 @@
 import { put, call, take, takeLatest} from 'redux-saga/effects';
-
+import { SagaIterator } from 'redux-saga';
 import {GET_EMAILS_START, SEND_EMAIL_START, DELETE_EMAIL, SET_EMAIL_READ} from '../store/emails/types';
 import {getEmailsSuccess, deleteEmailSuccess} from '../store/emails/actions';
 import {notify} from '../store/notification/actions';
 import {getAccountEmails, sendAccountEmail, deleteEmails, setEmailRead} from '../services/api';
 import {EmailCreation} from '../types'
 
-function* getEmailUpdates({email, emailAction}:any) {
+function* getEmailUpdates({email, emailAction}:any): SagaIterator {
   try{
     const response = yield call(getAccountEmails, email, emailAction)
     yield put(getEmailsSuccess(response)); 
     
   }catch(e){
-
   }  
 }
 
-function* sendEmailUpdates({payload}: any){
+function* sendEmailUpdates({payload}: any): SagaIterator {
   try{
     const response = yield call(sendAccountEmail, payload)
     yield put(notify(response.message)); 
@@ -25,8 +24,7 @@ function* sendEmailUpdates({payload}: any){
   }  
 }
 
-
-function* deleteEmailUpdates({emailUuids}: any){
+function* deleteEmailUpdates({emailUuids}: any): SagaIterator {
   try{
     const response = yield call(deleteEmails, emailUuids)
     yield put(notify(response.message)); 
@@ -36,7 +34,7 @@ function* deleteEmailUpdates({emailUuids}: any){
   }  
 }
 
-function* setEmailreadUpdates({emailUuid}:any){
+function* setEmailreadUpdates({emailUuid}:any): SagaIterator {
   try{
     const response = yield call(setEmailRead, emailUuid)
     yield put(getEmailsSuccess(response.emails)); 
@@ -51,5 +49,3 @@ export function* watchEmail() {
   yield takeLatest(DELETE_EMAIL, deleteEmailUpdates)
   yield takeLatest(SET_EMAIL_READ, setEmailreadUpdates)
 }
-
-
