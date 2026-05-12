@@ -13,7 +13,10 @@ import {ParamTypes} from '../../types';
 import './view.css';
 
 function EmailView({emails, setEmailRead}: any) {
-  let { emailAction,  emailUuid} = useParams<ParamTypes>();
+  const { emailAction, emailUuid } = useParams() as {
+  emailAction?: string;
+  emailUuid?: string;
+};
     
     if(emails){
       const {read, subject, created_at, body, cc, sender, ...otherInfo} = find(emails, (email) => email.emailUuid == emailUuid) || {};

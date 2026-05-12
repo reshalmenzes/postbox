@@ -13,7 +13,8 @@ interface ComposeModal {
 }
 
 function ComposeModal({ sendEmail, currentUser }: ComposeModal) {
-  const { email } = currentUser;
+  // ✅ Guard against undefined currentUser during initial render
+  const email = currentUser?.email;
 
   const onFinish = (values: EmailCreation) => {
     if (!values.body?.trim()) {
@@ -21,21 +22,24 @@ function ComposeModal({ sendEmail, currentUser }: ComposeModal) {
         return false;
       }
     }
-    sendEmail({ ...values, sender: email });
+    // ✅ Only send if email is available
+    if (email) {
+      sendEmail({ ...values, sender: email });
+    }
   };
 
   return (
     <Form name="compose-modal-form" onFinish={(values: EmailCreation) => onFinish(values)}>
-      <Form.Item label="To" name={'to'} rules={[{ required: true }]}>
+      <Form.Item label="To" name="to" rules={[{ required: true }]}>
         <Select mode="tags" style={{ width: '100%' }} placeholder="Tags Mode" />
       </Form.Item>
-      <Form.Item label="Cc" name={'cc'}>
+      <Form.Item label="Cc" name="cc">
         <Select mode="tags" style={{ width: '100%' }} placeholder="Tags Mode" />
       </Form.Item>
-      <Form.Item name={'subject'} label="Subject" rules={[{ required: true }]}>
+      <Form.Item name="subject" label="Subject" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item name={'body'} label="">
+      <Form.Item name="body" label="">
         <Input.TextArea />
       </Form.Item>
       <Form.Item>
