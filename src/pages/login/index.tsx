@@ -1,6 +1,6 @@
 import React, {useEffect, Dispatch, useState} from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Form, Input, Button, message, Layout } from 'antd';
 import {isEmpty} from 'lodash';
 import {Credentials} from '../../types';
@@ -43,7 +43,7 @@ const Login = ({signIn, currentUser, errorMessage, reset}:any) => {
   };
   
   if(home){
-    return <Redirect to= "/dashboard/inbox/list" />
+    return <Navigate to="/dashboard/inbox/list" replace />
   }
   return (
         <div className ={'login-form'}>

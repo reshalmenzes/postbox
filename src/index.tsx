@@ -8,14 +8,15 @@ import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />    
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import { createRoot } from 'react-dom/client';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+const root = createRoot(document.getElementById('root')!);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+// If staying on React 17 (your package.json shows react 17.0.2), this should work.
+// The error suggests a type mismatch. Fix by ensuring react-dom types match:
+// @types/react-dom should be "17.x" not "16.x"
 serviceWorker.unregister();

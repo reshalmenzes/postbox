@@ -26,9 +26,7 @@ describe('Login component', () => {
 
     return (<Provider store={store}>
         <BrowserRouter>
-        <Route exact path="/login">
-          <Login />
-        </Route>
+        <Route path="/login" element={<Login />} />
         </BrowserRouter>
       </Provider>)
     

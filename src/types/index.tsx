@@ -33,6 +33,6 @@ export interface formattedEmails {
 }
 
 export interface ParamTypes {
-	emailAction: string
-	emailUuid?:string
+  emailAction: string | undefined;
+  emailUuid: string | undefined;
 }

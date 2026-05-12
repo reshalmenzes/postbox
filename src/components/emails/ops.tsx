@@ -10,7 +10,7 @@ import {ActionTypes, ModalProps} from '../../store/modal/types';
 
 interface EmailOps {
   openModal : (options:ModalProps) => void,
-  selectedAction : string
+  selectedAction: string | undefined;
 } 
 
 function EmailOps({openModal, selectedAction}: EmailOps) {
